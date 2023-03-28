@@ -32,15 +32,19 @@ defaults
         errorfile 502 /etc/haproxy/errors/502.http
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
+
 backend my_servers
         balance roundrobin
         server 5429-web-01 54.205.8.223
         server 5429-web-02 54.204.68.87
 frontend haproxy_inbound
         bind *:80
+        bind *:443 ssl crt /etc/haproxy/ssl-certs/cert.pem
+
         acl letsencrypt-acl path_beg /.well-known/acme-challenge/
         use_backend letsencrypt-backend if letsencrypt-acl
+        
         default_backend my_servers
-        mode http
+
 backend letsencrypt-backend
         server letsencrypt 127.0.0.1:8888
