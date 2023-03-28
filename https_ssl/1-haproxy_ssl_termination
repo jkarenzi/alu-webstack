@@ -35,8 +35,8 @@ defaults
 
 backend my_servers
         balance roundrobin
-        server 5429-web-01 54.205.8.223
-        server 5429-web-02 54.204.68.87
+        server 5429-web-01 54.205.8.223:80 check
+        server 5429-web-02 54.204.68.87:80 check
 frontend haproxy_inbound
         bind *:80
         bind *:443 ssl crt /etc/haproxy/ssl-certs/cert.pem
